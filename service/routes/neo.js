@@ -1,110 +1,99 @@
-const Neo = require('../db/models/neo');
+const path = require('path');
+const neoRouter = require(path.join(__dirname, '../routes/neo'));
 
-let neoRouter = {};
+module.exports = ((server) => {
+    const getFastest = (async (req, res, next) => {
+        'use strict';
+        console.log('Getting fastest neo');
+        try {
+            const hzd = (req.query.hazardous === 'true');
+            const data = await neoRouter.getFastestNeo(hzd);
+            res.header('content-type', 'json');
+            res.status(200);
+            res.send(data[0]);
+            res.end();
+            next();
+        } catch (err) {
+            console.error(err.stack);
+            next(400, err);
+        }
+    });
 
-/**
- * Creates a new document with a neo
- * @param near_eart_object: (Neo)
- * @returns {Neo}
- */
-neoRouter.addNeo = (async (nearEarthObject) => {
-    'use strict';
-    let newNeo = new Neo(nearEarthObject);
-    await newNeo.validate();
-    newNeo = await newNeo.save();
-    return newNeo;
+    const getBestYear = (async (req, res, next) => {
+        'use strict';
+        console.log('Getting best year neo');
+        try {
+            const hzd = (req.query.hazardous === 'true');
+            const data = await neoRouter.getBestYear(hzd);
+            res.header('content-type', 'json');
+            res.status(200);
+            res.send(data);
+            res.end();
+            next();
+        } catch (err) {
+            console.error(err.stack);
+            next(400, err);
+        }
+    });
+
+    const getBestMonth = (async (req, res, next) => {
+        'use strict';
+        console.log('Getting best month neo');
+        try {
+            const hzd = (req.query.hazardous === 'true');
+            const data = await neoRouter.getBestMonth(hzd);
+            res.header('content-type', 'json');
+            res.status(200);
+            res.send(data);
+            res.end();
+            next();
+        } catch (err) {
+            console.error(err.stack);
+            next(400, err);
+        }
+    });
+
+    const listNeo = (async (req, res, next) => {
+        'use strict';
+        console.log('Listing all neos');
+        try {
+            const data = await neoRouter.getAllNeos();
+            res.header('content-type', 'json');
+            res.status(200);
+            res.send({
+                neos: data
+            });
+            res.end();
+            next();
+        } catch (err) {
+            console.error(err.stack);
+            next(400, err);
+        }
+    });
+
+    const addNeo = (async (req, res, next) => {
+        'use strict';
+        console.log('Adding an neo');
+        try {
+            const data = await neoRouter.addNeo(req.body);
+            res.header('content-type', 'json');
+            res.status(201);
+            res.send(data);
+            res.end();
+            next();
+        } catch (err) {
+            console.error(err.stack);
+            next(400, err);
+        }
+    });
+
+    server.get('/neo/hazardous', listNeo);
+    server.post('/neo/hazardous', addNeo);
+
+    server.get('/neo/fastest', getFastest);
+
+    server.get('/neo/best-year', getBestYear);
+
+    server.get('/neo/best-month', getBestMonth);
+
 });
-
-/**
- * Retrieves a list of all neos
- * @returns [Neo]
- */
-neoRouter.getAllNeos = (async () => {
-    'use strict';
-    return await Neo.find();
-});
-
-/**
- * Get the fastest neo by ordering for speed
- * @param Boolean hazardous : filter for hazardous (true or false)
- * @returns {Neo}
- */
-neoRouter.getFastestNeo = (async (hazardous) => {
-    return await Neo.find({
-        is_hazardous: hazardous
-    }).sort({
-        speed: -1
-    }).limit(1);
-});
-
-/**
- * Get Neo by grouping the mouth with more neos;
- * @param Boolean hazardous : filter for hazardous (true or false)
- * @returns {mouth: number, neo_count: number}
- */
-neoRouter.getBestMonth = (async (hazardous) => {
-    return await Neo.aggregate(
-        [{
-            $match: {
-                is_hazardous: hazardous
-            }
-        }, {
-            $project: {
-                month: {
-                    $month: "$date"
-                },
-            }
-        }, {
-            $group: {
-                _id: "$month",
-                count: {
-                    $sum: 1
-                }
-            }
-        }, {
-            $project: {
-                month: '$_id',
-                neo_count: '$count'
-            }
-        }]
-    ).sort({
-        neo_count: -1
-    }).limit(1);
-});
-
-/**
- * * Get Neo by grouping the year with more neos;
- * @param Boolean hazardous : filter for hazardous (true or false)
- * @returns {year: number, neo_count: number}
- */
-neoRouter.getBestYear = (async (hazardous) => {
-    return await Neo.aggregate(
-        [{
-            $match: {
-                is_hazardous: hazardous
-            }
-        }, {
-            $project: {
-                year: {
-                    $year: "$date"
-                },
-            }
-        }, {
-            $group: {
-                _id: "$year",
-                count: {
-                    $sum: 1
-                }
-            }
-        }, {
-            $project: {
-                year: '$_id',
-                neo_count: '$count'
-            }
-        }]
-    ).sort({
-        neo_count: -1
-    }).limit(1);
-});
-
-module.exports = neoRouter;
