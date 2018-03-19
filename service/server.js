@@ -4,7 +4,7 @@ const views = require('./views');
 const PORT = process.env.PORT | '8080';
 // Initialize restify server 
 server = restify.createServer();
-
+// Force restify  to parse the query and json body to the request
 server.use(restify.plugins.acceptParser(server.acceptable));
 server.use(restify.plugins.queryParser({
     mapParams: true
@@ -38,8 +38,10 @@ server.head('/', (req, res, next) => {
     res.end();
 });
 
+// Server listen
 server.listen(PORT, async () => {
     'use strict';
+    // Hack to not connect to mongo when running in test mode
     if (!(process.env.TEST_MODE === 'true')) {
         require('./db');
     }
