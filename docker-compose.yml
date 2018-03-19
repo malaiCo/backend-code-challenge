@@ -1,0 +1,34 @@
+version: "2.1"
+services:
+  server:
+    container_name: server
+    restart: always
+    build: .
+    environment: 
+      - ENV PORT=8080
+      - ENV NASA_API_KEY=N7LkblDsc5aen05FJqBQ8wU4qSdmsftwJagVK7UD
+      - ENV DATABASE_NAME=asteroid
+    ports:
+      - "8080:8080"
+    links:
+      - database
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    container_name: database
+    restart: always
+    image: mongo
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./data/db:/data/db
+    healthcheck:
+      test: echo 'db.stats().ok' | mongo localhost:27017/asteroid --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    ports:
+      - "27017:27017"

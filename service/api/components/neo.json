@@ -1,0 +1,43 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Represents an Neo",
+    "required": [
+        "reference"
+    ],
+    "title": "Neo",
+    "type": "object",
+    "properties": {
+        "__id": {
+            "type": "string",
+            "description": "Object id"
+        },
+        "date": {
+            "description": "Neo date when near earth",
+            "format": "date-time"
+        },
+        "reference": {
+            "type": "string",
+            "description": "Object reference"
+        },
+        "name": {
+            "type": "string",
+            "description": "Object defined name"
+        },
+        "speed": {
+            "type": "string",
+            "description": "Velocity of object in kilometers per hour"
+        },
+        "hazardous": {
+            "type": "boolean",
+            "description": "If neo is potentially hazardous"
+        },
+        "createdAt": {
+            "description": "When neo was created",
+            "format": "date-time"
+        },
+        "updatedAt": {
+            "description": "When object was updated",
+            "format": "date-time"
+        }
+    }
+}

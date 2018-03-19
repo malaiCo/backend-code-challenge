@@ -1,85 +1,30 @@
-# Basic Backend Developer Interview
+# NEO API
 
-Dear candidate, please follow this readme and solve all questions.
+First nice challenge.
+Will just add here my decisions and why:
+- restify: i used for long and gives better performance than express;
+- mongoose: typical client to connect to mongodb, nothing to add;
+- raml: Has no service should go without an API i include an raml file that better describes the api.
 
-> Before you can start, you should prepare your development environment.
+## Command Line Tools
 
-**This test requires:**
-- access to the internet
-- your favourite IDE
-- (PHP) working dev environment with PHP 7 and symfony 3.x
-- (Node) working dev environment with Node.js LTS
-- database (MongoDB, Postgres, MySQL)
-- nginx or alternative simple dev web server
+- make init
+npm install package.json
 
-**Good luck!**
+- make start
+Run docker compose file, meaning build and run both services. Press `ctr c` to quit
 
+- make import-data
+Runs a small js file that will get data from Nasa.neo api and send it to our server.
+This import uses an extra enpoint, has a post to neo will create the neo ;)
+[Note] This command depends on service be running so make sure you `make start` is running.
 
---------
+- make test
+Run our test battery
 
+### Considerations
 
-## Test tasks:
-
-**NOTE:** You are free to use any framework you wish. Bonus points for an explanation of your choice.
-
-1. Specify a default controller
-  - for route `/`
-  - with a proper json return `{"hello":"world!"}`
-
-2. Use the api.nasa.gov
-  - the API-KEY is `N7LkblDsc5aen05FJqBQ8wU4qSdmsftwJagVK7UD`
-  - documentation: https://api.nasa.gov/api.html#neows-feed
-  
-3. Write a command
-  - to request the data from the last 3 days from nasa api
-  - response contains count of Near-Earth Objects (NEOs)
-  - persist the values in your DB
-  - Define the model as follows:
-    - date
-    - reference (neo_reference_id)
-    - name
-    - speed (kilometers_per_hour)
-    - is hazardous (is_potentially_hazardous_asteroid)
-
-4. Create a route `/neo/hazardous`
-  - display all DB entries which contain potentially hazardous asteroids
-  - format JSON
-
-5. Create a route `/neo/fastest?hazardous=(true|false)`
-  - analyze all data
-  - calculate and return the model of the fastest asteroid
-  - with a hazardous parameter, where `true` means `is hazardous`
-  - default hazardous value is `false`
-  - format JSON
-
-6. Create a route `/neo/best-year?hazardous=(true|false)`
-  - analyze all data
-  - calculate and return a year with most asteroids
-  - with a hazardous parameter, where `true` means `is hazardous`
-  - default hazardous value is `false`
-  - format JSON
-
-7. Create a route `/neo/best-month?hazardous=(true|false)`
-  - analyze all data
-  - calculate and return a month with most asteroids (not a month in a year)
-  - with a hazardous parameter, where `true` means `is hazardous`
-  - default hazardous value is `false`
-  - format JSON
-   
-## Additional Instructions
-
-- Fork this repository
-- Tests are not optional
-- (PHP) Symfony is the expected framework
-- After you're done, provide us the link to your repository.
-- Leave comments where you were not sure how to properly proceed.
-- Implementations without a README will be automatically rejected.
-
-## Bonus Points
-
-- Clean code!
-- Knowledge of application flow.
-- Knowledge of modern best practices/coding patterns.
-- Componential thinking.
-- Knowledge of Docker.
-- Usage of MongoDB as persistance storage.
+I added enviromment variables to the docker-compose but this solution will not be properly to prod server, so let's assume this is to run a development server always.
+The package.json is outside of the service folder when it shouldn't, this was just to have the packages available for the tools importer to run.
+The same applies to the Dockerfile witch should be inside the service folder.
+No special erro handling where added to the api i am choosing to let the erros that came be passed has a 400 always;

@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Get best month ",
+    "description": "Response schema for getting best month of neos",
+    "type": "object",
+    "properties": {
+        "month": {
+            "type": "number"
+        },
+        "neo_count": {
+            "type": "number"
+        }
+    }
+}

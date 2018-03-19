@@ -1,0 +1,131 @@
+#%RAML 1.0
+title: Neo API
+version: 0.1
+documentation:
+  - title: Neo API
+    content: |
+      Use this API to add retrieve and calculate neos
+
+      #### Neos
+
+      A Neo represents an represents a near earth object.
+    
+
+baseUri: http://localhost:8080/
+mediaType: application/json
+
+/:
+  displayName: hello world
+  get:
+    displayName: Hello world method.
+    description: Say hi to the universe
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "hello": "world!" 
+              }
+      400:
+        description: Request data is invalid.
+      500:
+        description: An internal error occurred.
+
+  head:
+    displayName: Hello world method.
+    description: Say hi to the universe
+    responses:
+      200:
+        description: Hello
+      400:
+        description: Request data is invalid.
+      500:
+        description: An internal error occurred.
+
+/neo/hazardous:
+  get:
+    displayName: List all neos
+    description: |
+      display all DB entries which contain neos
+    request:
+      body:
+        type: 
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include schemas/get_neos.json
+      400:
+        description: Request data is invalid.
+      500:
+        description: An internal error occurred.
+  post:
+    displayName: Adds a new Neo
+      description: |
+        Makes a request to add a new neo to database
+      responses:
+        201:
+          body:
+            application/json:
+              type: !include schemas/add_neo.json
+        400:
+          description: Request data is invalid.
+        500:
+          description: An internal error occurred.
+
+/neo/fastest:
+  get:
+    displayName: get the fastest Neo
+    queryParameters:
+      hazardous:
+        type: Boolean
+        default: False
+        description: If it is dangerous to earth
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include schemas/get_neo.json
+      400:
+        description: Request data is invalid.
+      500:
+        description: An internal error occurred.
+
+/neo/best-month:
+  get:
+    displayName: Calculate month with most Neos
+    queryParameters:
+      hazardous:
+        type: Boolean
+        default: False
+        description: If it is dangerous to earth
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include schemas/get_best_month.json
+      400:
+        description: Request data is invalid.
+      500:
+        description: An internal error occurred.
+
+/neo/best-year:
+  get:
+    displayName: Calculate year with most Neos
+    queryParameters:
+      hazardous:
+        type: Boolean
+        default: False
+        description: If it is dangerous to earth
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include schemas/get_best_year.json
+      400:
+        description: Request data is invalid.
+      500:
+        description: An internal error occurred.
+
+

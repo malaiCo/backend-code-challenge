@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Get all asteroids ",
+    "description": "Response schema for getting all asteroid",
+    "type": "object",
+    "properties": {
+        "neos": {
+            "type": "array",
+            "items": {
+                "$ref": "../components/neo.json"
+            }
+        }
+    }
+}

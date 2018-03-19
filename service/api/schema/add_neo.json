@@ -1,0 +1,6 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Add an neo ",
+    "description": "Request schema for adding a neo",
+    "$ref": "../components/neo.json"
+}
