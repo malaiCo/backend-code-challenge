@@ -1,5 +1,5 @@
 const path = require('path');
-const neoRouter = require(path.join(__dirname, '../routes/neo'));
+const neoController = require(path.join(__dirname, '../controller/neo'));
 
 module.exports = ((server) => {
     const getFastest = (async (req, res, next) => {
@@ -7,7 +7,7 @@ module.exports = ((server) => {
         console.log('Getting fastest neo');
         try {
             const hzd = (req.query.hazardous === 'true');
-            const data = await neoRouter.getFastestNeo(hzd);
+            const data = await neoController.getFastestNeo(hzd);
             res.header('content-type', 'json');
             res.status(200);
             res.send(data[0]);
@@ -24,7 +24,7 @@ module.exports = ((server) => {
         console.log('Getting best year neo');
         try {
             const hzd = (req.query.hazardous === 'true');
-            const data = await neoRouter.getBestYear(hzd);
+            const data = await neoController.getBestYear(hzd);
             res.header('content-type', 'json');
             res.status(200);
             res.send(data);
@@ -41,7 +41,7 @@ module.exports = ((server) => {
         console.log('Getting best month neo');
         try {
             const hzd = (req.query.hazardous === 'true');
-            const data = await neoRouter.getBestMonth(hzd);
+            const data = await neoController.getBestMonth(hzd);
             res.header('content-type', 'json');
             res.status(200);
             res.send(data);
@@ -57,7 +57,7 @@ module.exports = ((server) => {
         'use strict';
         console.log('Listing all neos');
         try {
-            const data = await neoRouter.getAllNeos();
+            const data = await neoController.getAllNeos();
             res.header('content-type', 'json');
             res.status(200);
             res.send({
@@ -75,7 +75,7 @@ module.exports = ((server) => {
         'use strict';
         console.log('Adding an neo');
         try {
-            const data = await neoRouter.addNeo(req.body);
+            const data = await neoController.addNeo(req.body);
             res.header('content-type', 'json');
             res.status(201);
             res.send(data);
