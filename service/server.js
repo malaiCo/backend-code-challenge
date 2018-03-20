@@ -1,5 +1,5 @@
 const restify = require('restify');
-const views = require('./views');
+const routes = require('./routes');
 
 const PORT = process.env.PORT | '8080';
 // Initialize restify server 
@@ -45,7 +45,7 @@ server.listen(PORT, async () => {
     if (!(process.env.TEST_MODE === 'true')) {
         require('./db');
     }
-    views(server);
+    routes(server);
     console.log('%s listening at %s', server.name, server.url);
 });
 
