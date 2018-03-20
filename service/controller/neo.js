@@ -1,13 +1,13 @@
 const Neo = require('../db/models/neo');
 
-let neoRouter = {};
+let neoController = {};
 
 /**
  * Creates a new document with a neo
  * @param near_eart_object: (Neo)
  * @returns {Neo}
  */
-neoRouter.addNeo = (async (nearEarthObject) => {
+neoController.addNeo = (async (nearEarthObject) => {
     'use strict';
     let newNeo = new Neo(nearEarthObject);
     await newNeo.validate();
@@ -19,7 +19,7 @@ neoRouter.addNeo = (async (nearEarthObject) => {
  * Retrieves a list of all neos
  * @returns [Neo]
  */
-neoRouter.getAllNeos = (async () => {
+neoController.getAllNeos = (async () => {
     'use strict';
     return await Neo.find();
 });
@@ -29,7 +29,7 @@ neoRouter.getAllNeos = (async () => {
  * @param Boolean hazardous : filter for hazardous (true or false)
  * @returns {Neo}
  */
-neoRouter.getFastestNeo = (async (hazardous) => {
+neoController.getFastestNeo = (async (hazardous) => {
     return await Neo.find({
         is_hazardous: hazardous
     }).sort({
@@ -42,7 +42,7 @@ neoRouter.getFastestNeo = (async (hazardous) => {
  * @param Boolean hazardous : filter for hazardous (true or false)
  * @returns {mouth: number, neo_count: number}
  */
-neoRouter.getBestMonth = (async (hazardous) => {
+neoController.getBestMonth = (async (hazardous) => {
     return await Neo.aggregate(
         [{
             $match: {
@@ -77,7 +77,7 @@ neoRouter.getBestMonth = (async (hazardous) => {
  * @param Boolean hazardous : filter for hazardous (true or false)
  * @returns {year: number, neo_count: number}
  */
-neoRouter.getBestYear = (async (hazardous) => {
+neoController.getBestYear = (async (hazardous) => {
     return await Neo.aggregate(
         [{
             $match: {
@@ -107,4 +107,4 @@ neoRouter.getBestYear = (async (hazardous) => {
     }).limit(1);
 });
 
-module.exports = neoRouter;
+module.exports = neoController;
